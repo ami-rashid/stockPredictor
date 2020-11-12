@@ -85,7 +85,7 @@ class StockData extends React.Component {
         </div>
         <StockChart stockData={this.state.dataPoint}/>
         <div className='news-container'>
-          {this.state.newsArticles.map(article => <NewsCard newsArticle={article}/>)}
+          {this.state.newsArticles.map(article => <NewsCard key={article.title} newsArticle={article}/>)}
         </div>
       </div>
     )

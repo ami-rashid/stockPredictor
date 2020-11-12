@@ -17,8 +17,10 @@ export const _getNews = (news) => {
 export const getNews = (stockSymbol) => {
   try {
     return async(dispatch) => {
-        const { data } = (await axios.get(`http://newsapi.org/v2/everything?q=${stockSymbol}&from=2020-11-11&to=2020-11-11&sortBy=popularity&apiKey=${NEWS_API_KEY}`))
-        dispatch(_getNews(data.articles))
+        if (stockSymbol !== '') {
+            const { data } = (await axios.get(`http://newsapi.org/v2/everything?q=${stockSymbol}&from=2020-11-11&to=2020-11-11&sortBy=popularity&apiKey=${NEWS_API_KEY}`))
+            dispatch(_getNews(data.articles))
+        }
       }
   }
   catch (error) {

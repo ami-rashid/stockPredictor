@@ -362,7 +362,7 @@ var StockData = function (_React$Component) {
           'div',
           { className: 'news-container' },
           this.state.newsArticles.map(function (article) {
-            return _react2.default.createElement(_NewsCard2.default, { newsArticle: article });
+            return _react2.default.createElement(_NewsCard2.default, { key: article.title, newsArticle: article });
           })
         )
       );
@@ -512,16 +512,21 @@ var getNews = exports.getNews = function getNews(stockSymbol) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                if (!(stockSymbol !== '')) {
+                  _context.next = 6;
+                  break;
+                }
+
+                _context.next = 3;
                 return _axios2.default.get('http://newsapi.org/v2/everything?q=' + stockSymbol + '&from=2020-11-11&to=2020-11-11&sortBy=popularity&apiKey=' + _secrets.NEWS_API_KEY);
 
-              case 2:
+              case 3:
                 _ref2 = _context.sent;
                 data = _ref2.data;
 
                 dispatch(_getNews(data.articles));
 
-              case 5:
+              case 6:
               case 'end':
                 return _context.stop();
             }
@@ -575,6 +580,8 @@ var _axios2 = _interopRequireDefault(_axios);
 
 var _secrets = __webpack_require__(/*! ../../secrets */ "./secrets.js");
 
+var _secrets2 = _interopRequireDefault(_secrets);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -595,22 +602,41 @@ var getStocks = exports.getStocks = function getStocks(stockSymbol) {
   try {
     return function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch) {
-        var _ref2, data;
+        var ticker, _ref2, data;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return _axios2.default.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + stockSymbol + '&interval=5min&apikey=' + _secrets.STOCKS_API_KEY);
+                ticker = void 0;
 
-              case 2:
+                if (!(stockSymbol !== '')) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 4;
+                return _axios2.default.get('https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=' + stockSymbol + '&apikey=' + _secrets2.default);
+
+              case 4:
+                ticker = _context.sent.data.bestMatches[0]['1. symbol'];
+
+              case 5:
+                if (!ticker) {
+                  _context.next = 11;
+                  break;
+                }
+
+                _context.next = 8;
+                return _axios2.default.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + ticker + '&interval=5min&apikey=' + _secrets2.default);
+
+              case 8:
                 _ref2 = _context.sent;
                 data = _ref2.data;
 
                 dispatch(_getStocks(data));
 
-              case 5:
+              case 11:
               case 'end':
                 return _context.stop();
             }
