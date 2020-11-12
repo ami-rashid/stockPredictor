@@ -1,0 +1,221 @@
+/*
+ * Hi! I'm your stylesheet! I've got some sensible defaults here,
+ * but feel free to change me to your heart's content!
+ */
+
+* {
+  box-sizing: border-box;
+  font-family: arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(#ffffff, #c0c0c0);
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+}
+
+nav {
+  align-items: center;
+  background-color: #333333;
+  color: #c0c0c0;
+  display: flex;
+  justify-content: space-evenly;
+  height: 80px;
+  padding: 10px;
+}
+
+.navbar {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  transition: font-size 0.25s;
+}
+
+.navbar:hover {
+  color: rgb(0, 100, 208);
+  font-size: 22px;
+}
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input {
+  height: 2rem;
+  font-size: 1rem;
+}
+
+.input-form {
+  width: 30rem;
+  display: flex;
+  padding: 5rem;
+  flex-direction: column;
+}
+
+.input-container {
+  display: flex;
+  text-align: center;
+}
+
+button {
+  display: inline-block;
+  border: none;
+  padding: 0.5rem 0;
+  margin-top: 0.25rem;
+  background-color: crimson;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+  transition: border-radius 0.2s;
+}
+
+.edit-button {
+  width: 14rem;
+  background-color: dodgerblue;
+}
+
+.complete-button {
+  width: 14rem;
+  background-color: rgb(16, 168, 26);
+}
+
+.listBox img {
+  height: 8.75rem;
+  width: 10rem;
+}
+
+.listBox img:hover {
+  opacity: 0.8;
+}
+
+.bio-page-image {
+  height: 16rem;
+  width: 20rem;
+}
+
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listHeader button {
+  background-color: rgb(64, 163, 224);
+  padding: 1rem;
+  border-radius: 5px 5px;
+}
+
+.listHeader h1 {
+  color: dodgerblue;
+  animation-name: listname;
+  font-size: 2rem;
+  animation-duration: 0.5s;
+}
+
+@keyframes listname {
+  from {
+    color: rgb(74, 74, 74);
+    font-size: 0.5rem;
+  }
+  to {
+    color: dodgerblue;
+    font-size: 2rem;
+  }
+}
+
+button:hover {
+  background-color: rgb(251, 176, 26);
+  border-radius: 20px 20px;
+}
+
+.listContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+  width: fit-content;
+  background-color: rgb(138, 138, 138);
+  padding: 0.5rem;
+}
+
+.listBox {
+  display: flex;
+  margin: 0.5rem;
+  width: 25rem;
+}
+
+.stats{
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  width: 15rem;
+  background-color: rgb(213, 213, 213);
+}
+
+.linkTitle {
+  margin: 0.25rem;
+  text-decoration: none;
+  text-align: center;
+  font-size: large;
+  color: black;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem;
+  padding: 1rem;
+  color: white;
+  background-color: rgb(74, 74, 74);
+  border-radius: 1rem 1rem;
+}
+
+.home h1 {
+  color: dodgerblue;
+  animation-name: welcome;
+  font-size: 2.5rem;
+  animation-duration: 0.5s;
+}
+
+@keyframes welcome {
+  from {
+    color: rgb(74, 74, 74);
+    font-size: 1rem;
+  }
+  to {
+    color: dodgerblue;
+    font-size: 2.5rem;
+  }
+}
+
+.background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bio {
+  width: 25rem;
+}
+
+.stats p {
+  margin: 0;
+}
+
+.incomplete {
+  color: red;
+}
+
+.complete {
+  color: green;
+}
+
+.bad-submit {
+  color: red;
+}
