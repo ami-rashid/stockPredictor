@@ -484,6 +484,8 @@ var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _secrets = __webpack_require__(/*! ../../secrets */ "./secrets.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -511,7 +513,7 @@ var getNews = exports.getNews = function getNews(stockSymbol) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _axios2.default.get('http://newsapi.org/v2/everything?q=' + stockSymbol + '&from=2020-11-11&to=2020-11-11&sortBy=popularity&apiKey=c5b72249b1a54b4cb8847d0f55de5c45');
+                return _axios2.default.get('http://newsapi.org/v2/everything?q=' + stockSymbol + '&from=2020-11-11&to=2020-11-11&sortBy=popularity&apiKey=' + _secrets.NEWS_API_KEY);
 
               case 2:
                 _ref2 = _context.sent;
@@ -571,6 +573,8 @@ var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _secrets = __webpack_require__(/*! ../../secrets */ "./secrets.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -598,7 +602,7 @@ var getStocks = exports.getStocks = function getStocks(stockSymbol) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _axios2.default.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + stockSymbol + '&interval=5min&apikey=S2FLWO24D8K3MPLF');
+                return _axios2.default.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + stockSymbol + '&interval=5min&apikey=' + _secrets.STOCKS_API_KEY);
 
               case 2:
                 _ref2 = _context.sent;
@@ -46080,6 +46084,24 @@ module.exports = function(originalModule) {
 	}
 	return module;
 };
+
+
+/***/ }),
+
+/***/ "./secrets.js":
+/*!********************!*\
+  !*** ./secrets.js ***!
+  \********************/
+/*! exports provided: STOCKS_API_KEY, NEWS_API_KEY */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "STOCKS_API_KEY", function() { return STOCKS_API_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NEWS_API_KEY", function() { return NEWS_API_KEY; });
+const STOCKS_API_KEY = 'S2FLWO24D8K3MPLF'
+const NEWS_API_KEY = 'c5b72249b1a54b4cb8847d0f55de5c45'
+
 
 
 /***/ }),

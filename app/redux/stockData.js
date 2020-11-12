@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { STOCKS_API_KEY } from '../../secrets'
 
 //ACTIONS
 const GET_STOCKS = 'GET_STOCKS'

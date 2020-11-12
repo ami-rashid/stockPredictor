@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { NEWS_API_KEY } from '../../secrets'
 
 //ACTIONS
 const GET_NEWS = 'GET_NEWS'
