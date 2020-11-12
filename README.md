@@ -1,1 +1,1 @@
-# Aminoor's Boiler Plate for Fullstack Web Apps
+# Aminoor's Stock Predictor

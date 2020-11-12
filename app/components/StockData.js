@@ -2,7 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { getStocks} from '../redux/stockData'
+import { getNews } from '../redux/newsData'
 import StockChart from './Chart'
+import NewsCard from './NewsCard'
 
 
 
@@ -10,18 +12,23 @@ class StockData extends React.Component {
   constructor() {
     super(),
     this.state = {
+      stockSymbol: '',
       timePoints: [],
       openPrices: [],
       highPrices: [],
       lowPrices: [],
       closePrices: [],
       volume: [],
-      dataPoint: [['timepoint', 'a', 'b', 'c', 'd']]
+      dataPoint: [['timepoint', 'a', 'b', 'c', 'd']],
+      newsArticles: []
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
-    this.props.getStocks()
+    this.props.getStocks(this.state.stockSymbol)
+    this.props.getNews(this.state.stockSymbol)
   }
 
   componentDidUpdate(prevProps) {
@@ -37,16 +44,49 @@ class StockData extends React.Component {
         const lowPrice = time['3. low']*1;
         matrix.push([ timePoint, openPrice, closePrice, highPrice, lowPrice ]);
       }
-      this.setState({ dataPoint: matrix })
+      this.setState({ 
+        dataPoint: matrix, 
+        newsArticles: this.props.stocks.news
+      })
     }
   }
 
+  handleChange(event){
+    this.setState({
+      stockSymbol: event.target.value
+    })
+  }
+
+  handleSubmit(event){
+    event.preventDefault()
+    this.props.getStocks(this.state.stockSymbol)
+    this.props.getNews(this.state.stockSymbol)
+  }
+
   render() {
-    console.log(this.state)
+    const { stockSymbol } = this.state
     return (
       <div>
-        <h1>This is not working!</h1>
+        <div className="search-container">
+          <form onSubmit={this.handleSubmit}>
+            <input
+              value={stockSymbol}
+              onChange={this.handleChange}
+              className="searchbar"
+              type="text"
+              placeholder="Search"
+            ></input>
+            <button className="search-but" type="submit">
+              <img
+                src="https://www.flaticon.com/svg/static/icons/svg/622/622669.svg"
+              />
+            </button>
+          </form>
+        </div>
         <StockChart stockData={this.state.dataPoint}/>
+        <div className='news-container'>
+          {this.state.newsArticles.map(article => <NewsCard newsArticle={article}/>)}
+        </div>
       </div>
     )
   }
@@ -60,7 +100,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    getStocks: () => dispatch(getStocks())
+    getStocks: (stockSymbol) => dispatch(getStocks(stockSymbol)),
+    getNews: (stockSymbol) => dispatch(getNews(stockSymbol))
   }
 }
 

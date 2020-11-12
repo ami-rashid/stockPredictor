@@ -13,10 +13,10 @@ export const _getStocks = (stocks) => {
 }
 
 //THUNKS
-export const getStocks = () => {
+export const getStocks = (stockSymbol) => {
   try {
     return async(dispatch) => {
-        const { data } = (await axios.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo'))
+        const { data } = (await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stockSymbol}&interval=5min&apikey=${STOCKS_API_KEY}`))
         dispatch(_getStocks(data))
       }
   }

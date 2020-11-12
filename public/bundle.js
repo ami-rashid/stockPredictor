@@ -132,6 +132,54 @@ exports.default = StockChart;
 
 /***/ }),
 
+/***/ "./app/components/NewsCard.js":
+/*!************************************!*\
+  !*** ./app/components/NewsCard.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NewsCard = function NewsCard(_ref) {
+    var newsArticle = _ref.newsArticle;
+
+    return _react2.default.createElement(
+        'div',
+        { className: 'newscard' },
+        _react2.default.createElement('img', { src: newsArticle.urlToImage ? newsArticle.urlToImage : 'https://static.thenounproject.com/png/340719-200.png' }),
+        _react2.default.createElement(
+            'div',
+            { className: 'news-info' },
+            _react2.default.createElement(
+                'h3',
+                null,
+                newsArticle.title
+            ),
+            _react2.default.createElement(
+                'p',
+                null,
+                newsArticle.description
+            )
+        )
+    );
+};
+
+exports.default = NewsCard;
+
+/***/ }),
+
 /***/ "./app/components/Routes.js":
 /*!**********************************!*\
   !*** ./app/components/Routes.js ***!
@@ -196,9 +244,15 @@ var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_module
 
 var _stockData = __webpack_require__(/*! ../redux/stockData */ "./app/redux/stockData.js");
 
+var _newsData = __webpack_require__(/*! ../redux/newsData */ "./app/redux/newsData.js");
+
 var _Chart = __webpack_require__(/*! ./Chart */ "./app/components/Chart.js");
 
 var _Chart2 = _interopRequireDefault(_Chart);
+
+var _NewsCard = __webpack_require__(/*! ./NewsCard */ "./app/components/NewsCard.js");
+
+var _NewsCard2 = _interopRequireDefault(_NewsCard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -217,21 +271,26 @@ var StockData = function (_React$Component) {
     _classCallCheck(this, StockData);
 
     (_this = _possibleConstructorReturn(this, (StockData.__proto__ || Object.getPrototypeOf(StockData)).call(this)), _this), _this.state = {
+      stockSymbol: '',
       timePoints: [],
       openPrices: [],
       highPrices: [],
       lowPrices: [],
       closePrices: [],
       volume: [],
-      dataPoint: [['timepoint', 'a', 'b', 'c', 'd']]
+      dataPoint: [['timepoint', 'a', 'b', 'c', 'd']],
+      newsArticles: []
     };
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
     return _this;
   }
 
   _createClass(StockData, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.props.getStocks();
+      this.props.getStocks(this.state.stockSymbol);
+      this.props.getNews(this.state.stockSymbol);
     }
   }, {
     key: 'componentDidUpdate',
@@ -248,22 +307,64 @@ var StockData = function (_React$Component) {
           var lowPrice = time['3. low'] * 1;
           matrix.push([timePoint, openPrice, closePrice, highPrice, lowPrice]);
         }
-        this.setState({ dataPoint: matrix });
+        this.setState({
+          dataPoint: matrix,
+          newsArticles: this.props.stocks.news
+        });
       }
+    }
+  }, {
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({
+        stockSymbol: event.target.value
+      });
+    }
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(event) {
+      event.preventDefault();
+      this.props.getStocks(this.state.stockSymbol);
+      this.props.getNews(this.state.stockSymbol);
     }
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state);
+      var stockSymbol = this.state.stockSymbol;
+
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
-          'h1',
-          null,
-          'This is not working!'
+          'div',
+          { className: 'search-container' },
+          _react2.default.createElement(
+            'form',
+            { onSubmit: this.handleSubmit },
+            _react2.default.createElement('input', {
+              value: stockSymbol,
+              onChange: this.handleChange,
+              className: 'searchbar',
+              type: 'text',
+              placeholder: 'Search'
+            }),
+            _react2.default.createElement(
+              'button',
+              { className: 'search-but', type: 'submit' },
+              _react2.default.createElement('img', {
+                src: 'https://www.flaticon.com/svg/static/icons/svg/622/622669.svg'
+              })
+            )
+          )
         ),
-        _react2.default.createElement(_Chart2.default, { stockData: this.state.dataPoint })
+        _react2.default.createElement(_Chart2.default, { stockData: this.state.dataPoint }),
+        _react2.default.createElement(
+          'div',
+          { className: 'news-container' },
+          this.state.newsArticles.map(function (article) {
+            return _react2.default.createElement(_NewsCard2.default, { newsArticle: article });
+          })
+        )
       );
     }
   }]);
@@ -279,8 +380,11 @@ var mapState = function mapState(state) {
 
 var mapDispatch = function mapDispatch(dispatch) {
   return {
-    getStocks: function getStocks() {
-      return dispatch((0, _stockData.getStocks)());
+    getStocks: function getStocks(stockSymbol) {
+      return dispatch((0, _stockData.getStocks)(stockSymbol));
+    },
+    getNews: function getNews(stockSymbol) {
+      return dispatch((0, _newsData.getNews)(stockSymbol));
     }
   };
 };
@@ -341,6 +445,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 
+var _newsData = __webpack_require__(/*! ./newsData */ "./app/redux/newsData.js");
+
+var _newsData2 = _interopRequireDefault(_newsData);
+
 var _stockData = __webpack_require__(/*! ./stockData */ "./app/redux/stockData.js");
 
 var _stockData2 = _interopRequireDefault(_stockData);
@@ -348,10 +456,98 @@ var _stockData2 = _interopRequireDefault(_stockData);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var appReducer = (0, _redux.combineReducers)({
-    stocks: _stockData2.default
+    stocks: _stockData2.default,
+    news: _newsData2.default
 });
 
 exports.default = appReducer;
+
+/***/ }),
+
+/***/ "./app/redux/newsData.js":
+/*!*******************************!*\
+  !*** ./app/redux/newsData.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getNews = exports._getNews = undefined;
+exports.default = newsReducer;
+
+var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//ACTIONS
+var GET_NEWS = 'GET_NEWS';
+
+//ACTION CREATORS
+var _getNews = exports._getNews = function _getNews(news) {
+  return {
+    type: GET_NEWS,
+    news: news
+  };
+};
+
+//THUNKS
+var getNews = exports.getNews = function getNews(stockSymbol) {
+  try {
+    return function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch) {
+        var _ref2, data;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _axios2.default.get('http://newsapi.org/v2/everything?q=' + stockSymbol + '&from=2020-11-11&to=2020-11-11&sortBy=popularity&apiKey=c5b72249b1a54b4cb8847d0f55de5c45');
+
+              case 2:
+                _ref2 = _context.sent;
+                data = _ref2.data;
+
+                dispatch(_getNews(data.articles));
+
+              case 5:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, undefined);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+//REDUCER
+function newsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case GET_NEWS:
+      return action.news;
+    default:
+      return state;
+  }
+}
 
 /***/ }),
 
@@ -391,7 +587,7 @@ var _getStocks = exports._getStocks = function _getStocks(stocks) {
 };
 
 //THUNKS
-var getStocks = exports.getStocks = function getStocks() {
+var getStocks = exports.getStocks = function getStocks(stockSymbol) {
   try {
     return function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch) {
@@ -402,7 +598,7 @@ var getStocks = exports.getStocks = function getStocks() {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _axios2.default.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo');
+                return _axios2.default.get('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + stockSymbol + '&interval=5min&apikey=S2FLWO24D8K3MPLF');
 
               case 2:
                 _ref2 = _context.sent;
