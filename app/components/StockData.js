@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { getStocks} from '../redux/stockData'
 import { getNews } from '../redux/newsData'
 import StockChart from './Chart'
@@ -13,13 +12,7 @@ class StockData extends React.Component {
     super(),
     this.state = {
       stockSymbol: '',
-      timePoints: [],
-      openPrices: [],
-      highPrices: [],
-      lowPrices: [],
-      closePrices: [],
-      volume: [],
-      dataPoint: [['timepoint', 'a', 'b', 'c', 'd']],
+      dataPoint: [],
       newsArticles: []
     }
     this.handleChange = this.handleChange.bind(this)
@@ -34,7 +27,7 @@ class StockData extends React.Component {
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
       const timeSeries = this.props.stocks.stocks["Time Series (5min)"]
-      const matrix = [['0', 'a', 'b', 'c', 'd']];
+      const matrix = [];
       for(const key in timeSeries) {
         const time = timeSeries[key];
         const timePoint = key
@@ -42,8 +35,9 @@ class StockData extends React.Component {
         const closePrice = time['4. close']*1;
         const highPrice = time['2. high']*1;
         const lowPrice = time['3. low']*1;
-        matrix.push([ timePoint, openPrice, closePrice, highPrice, lowPrice ]);
+        matrix.unshift([ timePoint, lowPrice, openPrice, closePrice, highPrice ]);
       }
+      matrix.unshift(['0', 'a', 'b', 'c', 'd'])
       this.setState({ 
         dataPoint: matrix, 
         newsArticles: this.props.stocks.news

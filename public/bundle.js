@@ -240,8 +240,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
-var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-
 var _stockData = __webpack_require__(/*! ../redux/stockData */ "./app/redux/stockData.js");
 
 var _newsData = __webpack_require__(/*! ../redux/newsData */ "./app/redux/newsData.js");
@@ -272,13 +270,7 @@ var StockData = function (_React$Component) {
 
     (_this = _possibleConstructorReturn(this, (StockData.__proto__ || Object.getPrototypeOf(StockData)).call(this)), _this), _this.state = {
       stockSymbol: '',
-      timePoints: [],
-      openPrices: [],
-      highPrices: [],
-      lowPrices: [],
-      closePrices: [],
-      volume: [],
-      dataPoint: [['timepoint', 'a', 'b', 'c', 'd']],
+      dataPoint: [],
       newsArticles: []
     };
     _this.handleChange = _this.handleChange.bind(_this);
@@ -297,7 +289,7 @@ var StockData = function (_React$Component) {
     value: function componentDidUpdate(prevProps) {
       if (prevProps !== this.props) {
         var timeSeries = this.props.stocks.stocks["Time Series (5min)"];
-        var matrix = [['0', 'a', 'b', 'c', 'd']];
+        var matrix = [];
         for (var key in timeSeries) {
           var time = timeSeries[key];
           var timePoint = key;
@@ -305,8 +297,9 @@ var StockData = function (_React$Component) {
           var closePrice = time['4. close'] * 1;
           var highPrice = time['2. high'] * 1;
           var lowPrice = time['3. low'] * 1;
-          matrix.push([timePoint, openPrice, closePrice, highPrice, lowPrice]);
+          matrix.unshift([timePoint, lowPrice, openPrice, closePrice, highPrice]);
         }
+        matrix.unshift(['0', 'a', 'b', 'c', 'd']);
         this.setState({
           dataPoint: matrix,
           newsArticles: this.props.stocks.news
