@@ -4,9 +4,9 @@ import StockData from './StockData'
 
 const Routes = () => {
   return (
-    <div>
+    <main>
       <StockData />
-    </div>
+    </main>
   );
 };
 

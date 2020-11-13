@@ -111,21 +111,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var StockChart = function StockChart(_ref) {
     var stockData = _ref.stockData;
 
-    return _react2.default.createElement(_reactGoogleCharts.Chart, {
-        width: '100%',
-        height: 350,
-        chartType: 'CandlestickChart',
-        loader: _react2.default.createElement(
+    if (stockData.length > 1) {
+        return _react2.default.createElement(_reactGoogleCharts.Chart, {
+            width: '100%',
+            height: 350,
+            chartType: 'CandlestickChart',
+            loader: _react2.default.createElement(
+                'div',
+                null,
+                'Loading Chart'
+            ),
+            data: stockData,
+            options: {
+                legend: 'none'
+            },
+            rootProps: { 'data-testid': '1' }
+        });
+    } else {
+        return _react2.default.createElement(
             'div',
             null,
-            'Loading Chart'
-        ),
-        data: stockData,
-        options: {
-            legend: 'none'
-        },
-        rootProps: { 'data-testid': '1' }
-    });
+            _react2.default.createElement(
+                'h1',
+                null,
+                'Search for a company by name or symbol to see data!'
+            )
+        );
+    }
 };
 
 exports.default = StockChart;
@@ -208,7 +220,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Routes = function Routes() {
   return _react2.default.createElement(
-    'div',
+    'main',
     null,
     _react2.default.createElement(_StockData2.default, null)
   );
@@ -354,8 +366,8 @@ var StockData = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'news-container' },
-          this.state.newsArticles.map(function (article) {
-            return _react2.default.createElement(_NewsCard2.default, { key: article.title, newsArticle: article });
+          this.state.newsArticles.map(function (article, index) {
+            return _react2.default.createElement(_NewsCard2.default, { key: index, newsArticle: article });
           })
         )
       );
