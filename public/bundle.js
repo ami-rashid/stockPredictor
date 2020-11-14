@@ -109,38 +109,122 @@ var _reactGoogleCharts = __webpack_require__(/*! react-google-charts */ "./node_
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var StockChart = function StockChart(_ref) {
-    var stockData = _ref.stockData;
+    var stockSymbol = _ref.stockSymbol,
+        stockData = _ref.stockData;
 
     if (stockData.length > 1) {
-        return _react2.default.createElement(_reactGoogleCharts.Chart, {
-            width: '100%',
-            height: 350,
-            chartType: 'CandlestickChart',
-            loader: _react2.default.createElement(
-                'div',
-                null,
-                'Loading Chart'
-            ),
-            data: stockData,
-            options: {
-                legend: 'none'
-            },
-            rootProps: { 'data-testid': '1' }
-        });
-    } else {
         return _react2.default.createElement(
             'div',
             null,
             _react2.default.createElement(
+                'h2',
+                { className: 'centertext' },
+                'Showing Data for "',
+                stockSymbol,
+                '"'
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'chart-buttons' },
+                _react2.default.createElement(
+                    'button',
+                    { className: 'time-but', type: 'submit' },
+                    '1 Day'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'time-but', type: 'submit' },
+                    '1 Week'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'time-but', type: 'submit' },
+                    '1 Month'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'time-but', type: 'submit' },
+                    '6 Months'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'time-but', type: 'submit' },
+                    '1 Year'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'time-but', type: 'submit' },
+                    'Max'
+                )
+            ),
+            _react2.default.createElement(_reactGoogleCharts.Chart, {
+                width: '100%',
+                height: 350,
+                chartType: 'CandlestickChart',
+                loader: _react2.default.createElement(
+                    'div',
+                    null,
+                    'Loading Chart'
+                ),
+                data: stockData,
+                options: {
+                    hAxis: { title: 'Time' },
+                    vAxis: { title: 'Price ($ USD)' },
+                    legend: 'none'
+                },
+                rootProps: { 'data-testid': '1' }
+            })
+        );
+    } else {
+        return _react2.default.createElement(
+            'div',
+            { className: 'centertext' },
+            _react2.default.createElement(
                 'h1',
                 null,
-                'Search for a company by name or symbol to see data!'
+                'Search for a company by name or symbol to see its data!'
             )
         );
     }
 };
 
 exports.default = StockChart;
+
+/***/ }),
+
+/***/ "./app/components/Footer.js":
+/*!**********************************!*\
+  !*** ./app/components/Footer.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Footer = function Footer() {
+  return _react2.default.createElement(
+    "div",
+    { className: "footer" },
+    _react2.default.createElement(
+      "p",
+      null,
+      "\xA9 2020 Aminoor FSA. This website is strictly for educational purposes."
+    )
+  );
+};
+
+exports.default = Footer;
 
 /***/ }),
 
@@ -167,24 +251,65 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var NewsCard = function NewsCard(_ref) {
     var newsArticle = _ref.newsArticle;
 
+    var formatDate = function formatDate(str) {
+        var date = new Date(str);
+        var year = new Intl.DateTimeFormat("en", { year: "numeric" }).format(date);
+        var month = new Intl.DateTimeFormat("en", { month: "long" }).format(date);
+        var day = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(date);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+
+        return "Published at " + month + " " + day + ", " + year + " at " + hours + ":" + minutes + " " + ampm;
+    };
+
     return _react2.default.createElement(
-        'div',
-        { className: 'newscard' },
-        _react2.default.createElement('img', { src: newsArticle.urlToImage ? newsArticle.urlToImage : 'https://static.thenounproject.com/png/340719-200.png' }),
+        "div",
+        { className: "newscard" },
         _react2.default.createElement(
-            'div',
-            { className: 'news-info' },
+            "div",
+            { className: "imagebox" },
+            _react2.default.createElement("img", { src: newsArticle.urlToImage ? newsArticle.urlToImage : 'https://static.thenounproject.com/png/340719-200.png' })
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "news-info" },
             _react2.default.createElement(
-                'h3',
+                "h3",
                 null,
                 newsArticle.title
             ),
             _react2.default.createElement(
-                'p',
+                "p",
+                { className: "publish-date" },
+                formatDate(newsArticle.publishedAt)
+            ),
+            _react2.default.createElement(
+                "p",
                 null,
                 newsArticle.description
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "article-source" },
+                _react2.default.createElement(
+                    "button",
+                    { className: "article-but", type: "submit" },
+                    _react2.default.createElement(
+                        "a",
+                        { target: "_blank", href: newsArticle.url },
+                        "Read Article"
+                    )
+                ),
+                _react2.default.createElement(
+                    "h3",
+                    { className: "company" },
+                    newsArticle.source.name
+                )
             )
-        )
+        ),
+        _react2.default.createElement("a", null)
     );
 };
 
@@ -216,13 +341,18 @@ var _StockData = __webpack_require__(/*! ./StockData */ "./app/components/StockD
 
 var _StockData2 = _interopRequireDefault(_StockData);
 
+var _Footer = __webpack_require__(/*! ./Footer */ "./app/components/Footer.js");
+
+var _Footer2 = _interopRequireDefault(_Footer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Routes = function Routes() {
   return _react2.default.createElement(
-    'main',
+    'div',
     null,
-    _react2.default.createElement(_StockData2.default, null)
+    _react2.default.createElement(_StockData2.default, null),
+    _react2.default.createElement(_Footer2.default, null)
   );
 };
 
@@ -281,6 +411,7 @@ var StockData = function (_React$Component) {
     _classCallCheck(this, StockData);
 
     (_this = _possibleConstructorReturn(this, (StockData.__proto__ || Object.getPrototypeOf(StockData)).call(this)), _this), _this.state = {
+      search: '',
       stockSymbol: '',
       dataPoint: [],
       newsArticles: []
@@ -309,9 +440,9 @@ var StockData = function (_React$Component) {
           var closePrice = time['4. close'] * 1;
           var highPrice = time['2. high'] * 1;
           var lowPrice = time['3. low'] * 1;
-          matrix.unshift([timePoint, lowPrice, openPrice, closePrice, highPrice]);
+          matrix.unshift([this.modifyDate(timePoint), lowPrice, openPrice, closePrice, highPrice]);
         }
-        matrix.unshift(['0', 'a', 'b', 'c', 'd']);
+        matrix.unshift(['0', 'Opening Price', 'b', 'c', 'd']);
         this.setState({
           dataPoint: matrix,
           newsArticles: this.props.stocks.news
@@ -322,24 +453,57 @@ var StockData = function (_React$Component) {
     key: 'handleChange',
     value: function handleChange(event) {
       this.setState({
-        stockSymbol: event.target.value
+        search: event.target.value
       });
     }
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
       event.preventDefault();
-      this.props.getStocks(this.state.stockSymbol);
-      this.props.getNews(this.state.stockSymbol);
+      this.setState({
+        stockSymbol: this.state.search
+      });
+      this.props.getStocks(this.state.search);
+      this.props.getNews(this.state.search);
+    }
+  }, {
+    key: 'modifyDate',
+    value: function modifyDate(dateString) {
+      var date = new Date(dateString);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      if (minutes === 0) minutes = '00';
+      var ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+
+      return hours + ':' + minutes + ' ' + ampm;
     }
   }, {
     key: 'render',
     value: function render() {
-      var stockSymbol = this.state.stockSymbol;
+      var _state = this.state,
+          search = _state.search,
+          stockSymbol = _state.stockSymbol,
+          dataPoint = _state.dataPoint,
+          newsArticles = _state.newsArticles;
 
       return _react2.default.createElement(
         'div',
-        null,
+        { className: !stockSymbol ? 'page' : 'in-page' },
+        _react2.default.createElement(
+          'div',
+          { className: 'logo' },
+          _react2.default.createElement(
+            'h1',
+            { className: 'stock' },
+            '.stock'
+          ),
+          _react2.default.createElement(
+            'h1',
+            { className: 'board' },
+            'BOARD'
+          )
+        ),
         _react2.default.createElement(
           'div',
           { className: 'search-container' },
@@ -347,7 +511,7 @@ var StockData = function (_React$Component) {
             'form',
             { onSubmit: this.handleSubmit },
             _react2.default.createElement('input', {
-              value: stockSymbol,
+              value: search,
               onChange: this.handleChange,
               className: 'searchbar',
               type: 'text',
@@ -362,14 +526,27 @@ var StockData = function (_React$Component) {
             )
           )
         ),
-        _react2.default.createElement(_Chart2.default, { stockData: this.state.dataPoint }),
-        _react2.default.createElement(
+        _react2.default.createElement(_Chart2.default, { stockSymbol: stockSymbol, stockData: dataPoint }),
+        newsArticles.length ? _react2.default.createElement(
           'div',
-          { className: 'news-container' },
-          this.state.newsArticles.map(function (article, index) {
-            return _react2.default.createElement(_NewsCard2.default, { key: index, newsArticle: article });
-          })
-        )
+          null,
+          _react2.default.createElement(
+            'h3',
+            { className: 'centertext' },
+            'Showing ',
+            newsArticles.length,
+            ' articles related to "',
+            stockSymbol,
+            '"'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'news-container' },
+            newsArticles.map(function (article, index) {
+              return _react2.default.createElement(_NewsCard2.default, { key: index, newsArticle: article });
+            })
+          )
+        ) : null
       );
     }
   }]);
